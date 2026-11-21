@@ -1,20 +1,77 @@
-# riemann-hypothesis
+# riemann-hypothesis-original
 
-[![checks](https://github.com/Deicyde/riemann-hypothesis/actions/workflows/checks.yml/badge.svg)](https://github.com/Deicyde/riemann-hypothesis/actions/workflows/checks.yml)
+[![checks](https://github.com/homeowmorphism/riemann-hypothesis-original/actions/workflows/checks.yml/badge.svg)](https://github.com/homeowmorphism/riemann-hypothesis-original/actions/workflows/checks.yml)
 
-A [Comparator](https://github.com/leanprover/comparator) setup for the Lean formalization that
-claims a proof of the Riemann Hypothesis, and of GRH for Dirichlet L-functions, announced on
-2026-11-20 at <https://alpo.ge/remark.pdf>.
+The Lean formalization that claims a proof of the Riemann Hypothesis, and of GRH for Dirichlet
+L-functions, exactly as Levent Alpöge published it on 2026-11-20 at <https://alpo.ge/remark.pdf>.
 
-This repository is the submission, unmodified, plus what Comparator needs and the submission
-does not include:
+**This repository is frozen.** It holds the published source and the few files needed to check
+it. The source here will not change. Work that shortens or cleans up the proof happens in
+[leanprover-community/riemann-hypothesis](https://github.com/leanprover-community/riemann-hypothesis).
+The history here starts with that repository's first 19 commits, made before anyone edited the
+source.
 
-| File | What it is |
+## What is here
+
+| Path | What it is |
 |---|---|
-| [`src/Challenge.lean`](src/Challenge.lean) | the five theorems, stated in a file that imports only Mathlib |
-| [`comparator.json`](comparator.json) | the Comparator config |
-| [`export-targets.txt`](export-targets.txt) | the declarations to export |
-| [`verification/`](verification/NOTES.md) | our notes, and the results once there are some |
+| [`src/`](src/) | the published source, unchanged: 175,187 `.lean` files |
+| `lean-toolchain`, `lake-manifest.json` | the published configuration, unchanged |
+| [`lakefile.toml`](lakefile.toml) | the published file, with marked additions for `Challenge` and the cache |
+| [`src/Challenge.lean`](src/Challenge.lean) | the five claimed theorems, stated in a file that imports only Mathlib |
+| [`comparator.json`](comparator.json), [`export-targets.txt`](export-targets.txt) | settings for [Comparator](https://github.com/leanprover/comparator), the tool that judges a proof against its statement |
+| [`scripts/`](scripts/) | the download of compiled files, and two checks of this repository |
+| [`verification/`](verification/NOTES.md) | notes on the source, the tools and the compiled files |
+
+## What is frozen
+
+These never change: `src/`, `lean-toolchain`, `lake-manifest.json`, `lakefile.toml`,
+`comparator.json` and `export-targets.txt`.
+[`scripts/check-frozen.sh`](scripts/check-frozen.sh) compares each of them with the Git object
+it had when this repository was frozen. CI runs that script on every push and pull request.
+
+The README, the notes, the scripts and the CI workflow can still change, for example when a
+download address moves.
+
+Pull requests that edit a frozen file belong in
+[leanprover-community/riemann-hypothesis](https://github.com/leanprover-community/riemann-hypothesis).
+
+## Checking that this is the published source
+
+```bash
+git clone https://github.com/homeowmorphism/riemann-hypothesis-original
+cd riemann-hypothesis-original
+scripts/check-frozen.sh    # the frozen files are the ones this repository was frozen with
+scripts/check-archive.sh   # downloads the archive from alpo.ge and compares every file
+```
+
+The second script downloads `https://alpo.ge/lean.tar.gz.part01` to `part14`, 239 MB in all. It
+joins them and checks that the sha256 is
+`9631b4f020199e580ba86178cb56c6e9b09f690c2369a80dc4334aa93f49c7fc`. It then unpacks the archive
+and compares every file with this checkout. CI runs both scripts.
+
+The first commit, `40e56bab`, is the archive unpacked with nothing changed, and the tag
+`as-published` points at it. It is also the first commit of
+leanprover-community/riemann-hypothesis, so `git rev-list --max-parents=0 HEAD` prints the same
+id in both repositories.
+
+## Getting the compiled files
+
+Compiling the source takes hours on a large machine. To read and explore the proof without
+compiling it, download a published set of compiled files:
+
+```bash
+lake exe cache get
+lake build --no-build
+```
+
+The first command downloads 4.94 GB and unpacks it. The second asks Lake whether anything still
+needs compiling, and should end with `All targets up-to-date`. You need Python 3.11 or newer and
+about 105 GB of free disk.
+
+Other people's machines compiled these files. The download checks that you received the files
+that were published, not that the proof is correct. The [cache notes](verification/CACHE.md) say
+where the files come from and what is pinned.
 
 ## What is claimed
 
@@ -28,18 +85,22 @@ does not include:
 
 ## Checking it
 
+These steps compile the source on your own machine and judge the result with Comparator. They
+do not use the compiled files from the section above.
+
 ```bash
 export LEAN_ABORT_ON_PANIC=1   # as Comparator sets it: stop on an internal error, don't continue
+export LAKE_ARTIFACT_CACHE=false   # rebuild the submission even if cache-env.sh was sourced earlier
 export MATHLIB_CACHE_GET_URL=https://cache.mathlib.org/mathlib4   # Mathlib's current cache server
 
 # 1. Export the challenge. Clean clone at $CLEAN, Lean v4.33.1.
 cd "$CLEAN"
-lake exe cache get
+lake exe mathlib/cache get
 lake build Challenge
 lake env lean4export Challenge -- $(cat export-targets.txt) > challenge.export
 
 # 2. Build the solution. Second clone, inside a sandbox with no network. Takes hours.
-lake exe cache get      # before entering the sandbox
+lake exe mathlib/cache get      # before entering the sandbox
 lake build Main         # inside the sandbox
 
 # 3. Export the solution. Still inside the sandbox; only solution.export comes out.
@@ -60,13 +121,26 @@ What to know before running it:
   where none of that code has been compiled. CI does step 1 on every push and publishes the
   result as the `challenge-export` artifact. Its sha256 is
   `bd484ac9886a96f26b1d9a7a59ebd45b7a70d102c015d4f31f9302bbdd6ab2b9`.
+- **Not `lake exe cache get`.** In this repository that command also downloads compiled files
+  for the submission itself, and `lake build Main` then compiles nothing. Steps 1 and 2 use
+  `lake exe mathlib/cache get`, which fetches Mathlib only.
 - **Cost.** Hours on a large machine, about 100 GB of disk, and a lot of memory for step 4.
 
-The [notes](verification/NOTES.md) have the details: where the source came from, the Lean
-version and its known kernel fixes, the tools, the sandboxes, the test of these steps, and the
-limits of what a passing run shows.
+The [notes](verification/NOTES.md) have the details: the Lean version and its known kernel
+fixes, the tools, the sandboxes, a test of these steps on a smaller example, and the limits of
+what a passing run shows.
+
+## Who made what
+
+- Levent Alpöge published the source.
+- Jack McCarthy made the mirror commit, `Challenge.lean`, the Comparator settings and the
+  notes. Those commits are kept here as they were, together with one by Marcelo Lynch.
+- Kim Morrison built the cache of compiled files and wrote the download client.
+- James Chang proposed a frozen repository beside the working one, in
+  [issue #56](https://github.com/leanprover-community/riemann-hypothesis/issues/56).
 
 ## License
 
 The submission belongs to its author and was published without a license. It is mirrored here
-unmodified, for verification only.
+unmodified, for verification only. The files added around it come from
+leanprover-community/riemann-hypothesis, which has no license file either.

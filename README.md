@@ -101,7 +101,7 @@ around it:
   one, in [issue #56](https://github.com/leanprover-community/riemann-hypothesis/issues/56).
 - [Hang Lu Su](https://github.com/homeowmorphism) built this repository with Claude: the
   freeze, its two checks, this README, the cache notes, the verification guide and the results
-  page. Hang Lu Su also wrote three small fixes to the download client.
+  page. Hang Lu Su also wrote two small fixes to the download client.
 
 ## License
 

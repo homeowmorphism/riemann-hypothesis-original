@@ -75,8 +75,21 @@ To check both yourself:
 
 ```bash
 scripts/check-frozen.sh    # compare with the pinned Git objects; requires full Git history
-scripts/check-archive.sh   # download the 239 MB source archive and compare every file
+scripts/check-archive.sh   # download the 239 MB source archive from alpo.ge and compare every file
 ```
+
+The [`as-published` release](https://github.com/homeowmorphism/riemann-hypothesis-original/releases/tag/as-published)
+keeps a copy of the archive's 14 files. To compare with
+that copy instead:
+
+```bash
+RH_ARCHIVE_URL=https://github.com/homeowmorphism/riemann-hypothesis-original/releases/download/as-published \
+  scripts/check-archive.sh
+```
+
+The Wayback Machine also captured each of the 14 URLs between 2026-11-20 and 2026-11-22 (for
+example [part01](https://web.archive.org/web/*/https://alpo.ge/lean.tar.gz.part01)), and its
+captures have the same contents.
 
 ## CI
 

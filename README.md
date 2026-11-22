@@ -39,6 +39,11 @@ anyone edited the source. To confirm, run `git ls-tree HEAD` in this repository 
 The README, the notes, the scripts and the CI workflow can still change, for example when a
 download address moves.
 
+A bot watches leanprover-community/riemann-hypothesis and copies over three things, each as a
+pull request: the results of checking the original proof, fixes to the download scripts, and
+corrections to the checking instructions. It never touches the Lean source. If the download
+server moves, it opens an issue and changes nothing.
+
 Pull requests that edit a frozen file belong in
 [leanprover-community/riemann-hypothesis](https://github.com/leanprover-community/riemann-hypothesis).
 
@@ -142,10 +147,15 @@ what a passing run shows.
 - [Jack McCarthy](https://github.com/Deicyde) made the mirror commit, `Challenge.lean`, the
   Comparator settings and the notes. Those commits are kept here as they were, together with
   one by [Marcelo Lynch](https://github.com/marcelolynch).
-- [Kim Morrison](https://github.com/kim-em) built the cache of compiled files and wrote the
-  download client.
+- Jack McCarthy also compiled the source and published
+  [the compiled files](https://huggingface.co/datasets/JackMcCarthy/riemann-hypothesis-build).
+- [Kim Morrison](https://github.com/kim-em) turned those files into the cache that
+  `lake exe cache get` downloads, and wrote the download client.
 - [James Chang](https://github.com/jamesyc) proposed a frozen repository beside the working
   one, in [issue #56](https://github.com/leanprover-community/riemann-hypothesis/issues/56).
+- [Hang Lu Su](https://github.com/homeowmorphism) built this repository with Claude: the
+  freeze, its two checks, this README and the cache notes. Hang Lu Su also wrote three small
+  fixes to the download client.
 
 ## License
 

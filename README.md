@@ -78,18 +78,26 @@ scripts/check-frozen.sh    # compare with the pinned Git objects; requires full 
 scripts/check-archive.sh   # download the 239 MB source archive from alpo.ge and compare every file
 ```
 
-The [`as-published` release](https://github.com/homeowmorphism/riemann-hypothesis-original/releases/tag/as-published)
-keeps a copy of the archive's 14 files. To compare with
-that copy instead:
+The Wayback Machine captured each of the archive's 14 parts between 2026-11-20 and 2026-11-22,
+with the same contents:
+[part01][wb01], [part02][wb02], [part03][wb03], [part04][wb04], [part05][wb05],
+[part06][wb06], [part07][wb07], [part08][wb08], [part09][wb09], [part10][wb10],
+[part11][wb11], [part12][wb12], [part13][wb13], [part14][wb14].
 
-```bash
-RH_ARCHIVE_URL=https://github.com/homeowmorphism/riemann-hypothesis-original/releases/download/as-published \
-  scripts/check-archive.sh
-```
-
-The Wayback Machine also captured each of the 14 URLs between 2026-11-20 and 2026-11-22 (for
-example [part01](https://web.archive.org/web/*/https://alpo.ge/lean.tar.gz.part01)), and its
-captures have the same contents.
+[wb01]: https://web.archive.org/web/20261120142003/https://alpo.ge/lean.tar.gz.part01
+[wb02]: https://web.archive.org/web/20261120153908/https://alpo.ge/lean.tar.gz.part02
+[wb03]: https://web.archive.org/web/20261120154123/https://alpo.ge/lean.tar.gz.part03
+[wb04]: https://web.archive.org/web/20261120154256/https://alpo.ge/lean.tar.gz.part04
+[wb05]: https://web.archive.org/web/20261120154552/https://alpo.ge/lean.tar.gz.part05
+[wb06]: https://web.archive.org/web/20261120154647/https://alpo.ge/lean.tar.gz.part06
+[wb07]: https://web.archive.org/web/20261120154740/https://alpo.ge/lean.tar.gz.part07
+[wb08]: https://web.archive.org/web/20261120154744/https://alpo.ge/lean.tar.gz.part08
+[wb09]: https://web.archive.org/web/20261122154217/https://alpo.ge/lean.tar.gz.part09
+[wb10]: https://web.archive.org/web/20261121194229/https://alpo.ge/lean.tar.gz.part10
+[wb11]: https://web.archive.org/web/20261120155008/https://alpo.ge/lean.tar.gz.part11
+[wb12]: https://web.archive.org/web/20261120155011/https://alpo.ge/lean.tar.gz.part12
+[wb13]: https://web.archive.org/web/20261120155155/https://alpo.ge/lean.tar.gz.part13
+[wb14]: https://web.archive.org/web/20261120142002/https://alpo.ge/lean.tar.gz.part14
 
 ## CI
 

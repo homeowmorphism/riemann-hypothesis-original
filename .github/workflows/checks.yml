@@ -48,7 +48,7 @@ jobs:
       - name: Build only the Challenge module
         run: lake build Challenge
 
-      # Step 1 of the README: export the challenge on a clean machine, where none of the
+      # Step 2 of verification/CHECKING.md: export the challenge on a clean machine, where none of the
       # submission's code has been compiled, and publish the file for the judge to use.
       - name: Build the exporter (lean4export v4.33.0 with this project's Lean)
         run: |
@@ -67,7 +67,7 @@ jobs:
             echo "- size: $(stat -c %s challenge.export) bytes, $(wc -l < challenge.export) lines"
             echo "- commit: \`$GITHUB_SHA\`"
           } >> "$GITHUB_STEP_SUMMARY"
-          # The README quotes this checksum; fail if the export ever changes.
+          # verification/CHECKING.md quotes this checksum; fail if the export ever changes.
           echo "bd484ac9886a96f26b1d9a7a59ebd45b7a70d102c015d4f31f9302bbdd6ab2b9  challenge.export" | sha256sum -c
           zstd -q -19 -T0 --rm challenge.export
       - uses: actions/upload-artifact@v4

@@ -27,7 +27,7 @@ nanoda both accept the proof.
 
 ## Cache
 
-A full build takes hours, so you should use the cache: 
+A full build takes hours, so you should use the cache:
 
 ```bash
 lake exe cache get
@@ -70,8 +70,8 @@ checks recorded so far.
 before any published source was edited. Beyond the published archive, they hold only
 `Challenge.lean`, the Comparator settings and marked additions to `lakefile.toml`. The first
 commit, `40e56bab` (tag `as-published`), is the archive's `lean/` directory unchanged; the
-[source notes](verification/NOTES.md#source) record where the archive was downloaded and its
-checksum. To check both yourself:
+[source notes](verification/NOTES.md#source) record the archive's download URLs and checksum.
+To check both yourself:
 
 ```bash
 scripts/check-frozen.sh    # compare with the pinned Git objects; requires full Git history

@@ -1,4 +1,4 @@
-name: checks
+name: preservation and challenge checks
 
 # Three fast checks. None compiles the submission's own code; the Comparator run does that
 # and is too big for hosted runners (see the README).

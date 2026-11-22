@@ -40,10 +40,12 @@ describe how the two were combined and repacked for Lake. The tools that did it 
 [`scripts/`](https://github.com/leanprover-community/riemann-hypothesis/tree/f28a764e76a18f68680446bf09682c24d1a8b5c4/scripts)
 of that repository at the same commit. They are not copied here.
 
-The files are served from `https://rh-cache.taucetiproject.org`, a storage bucket that the
-upstream maintainers run. This repository has no copy of its own. If that address ever stops
-answering, the two builds above remain the source, and the proof can always be compiled from
-scratch.
+The files are served from shared TauCeti storage at `https://rh-cache.taucetiproject.org`.
+This repository has no separate archival copy of its own. If that address ever stops
+answering, recovery depends on continued access to the two published builds above or on
+rebuilding the source with its pinned toolchain and dependencies. The checksums identify the
+expected files; they do not guarantee continued availability. A separate archival copy of the
+cache and its manifests remains to be established.
 
 ## What is pinned
 
@@ -56,8 +58,10 @@ scratch.
 | sha256 of Lake's map from inputs to outputs | `fed2443b161bd8194d9507e5c9c0e555b865dbba6963a0d57172723a439e6941` |
 | sha256 of `lake-manifest.json` | `fee57ee9ed399d0a638ca955e5ad40a37a36eeb9b6dfd9f5964114fa7bbe4774` |
 
-The upstream commit is an ancestor of every commit in this repository, and `src/` here has the
-same Git tree. The values live in [`scripts/restore-cache.py`](../scripts/restore-cache.py) and
+The downloader requests this fixed upstream commit, so later upstream builds do not change
+which cache it selects. That commit is an ancestor of every commit in this repository, and
+`src/` here has the same Git tree. The values live in
+[`scripts/restore-cache.py`](../scripts/restore-cache.py) and
 [`scripts/lake-cache-get.sh`](../scripts/lake-cache-get.sh).
 
 ## What the download checks
@@ -66,17 +70,18 @@ Before unpacking, `restore-cache.py` checks that:
 
 - `src/`, `lean-toolchain`, `lakefile.toml` and `lake-manifest.json` in your checkout are the
   pinned ones, with no local edits and no extra files under `src/`;
-- the list of archives has the pinned sha256 and names all 175,187 modules;
+- the list of archives has the sha256 stored in this repository and names all 175,187 modules;
 - every downloaded archive has the sha256 that the list gives for it.
 
 If your checkout differs, it stops with `Bulk restore stopped` and unpacks nothing.
 
 ## What it does not show
 
-These checks show that you received the files that were published. They do not show that the
-proof is correct. A compiled file is whatever its builder's machine wrote, and here the builders
-are two machines you do not control. To trust the result, compile the source yourself and judge
-it with Comparator, as the [README](../README.md#checking-it) describes.
+These checks show that you received the recorded published files. They do not independently
+establish that those files were faithfully compiled from the source or that the proof is correct.
+The connection to the original submission rests on the documented community builds and cache
+preparation described above. For independent verification, compile the source yourself and
+judge it with Comparator, as the [README](../README.md#checking-it) describes.
 
 ## Where the client came from
 

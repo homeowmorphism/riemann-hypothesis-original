@@ -19,7 +19,7 @@ free disk.
    `All targets up-to-date`.
 
 For Mathlib alone, run `lake exe mathlib/cache get`. The steps for checking the proof in the
-[README](../README.md#checking-it) use that command, so that the proof is compiled on your
+[README](../README.md#checking-the-proof-yourself) use that command, so that the proof is compiled on your
 machine and not downloaded.
 
 ## Where the files come from
@@ -81,7 +81,7 @@ These checks show that you received the recorded published files. They do not in
 establish that those files were faithfully compiled from the source or that the proof is correct.
 The connection to the original submission rests on the documented community builds and cache
 preparation described above. For independent verification, compile the source yourself and
-judge it with Comparator, as the [README](../README.md#checking-it) describes.
+judge it with Comparator, as the [README](../README.md#checking-the-proof-yourself) describes.
 
 ## Where the client came from
 

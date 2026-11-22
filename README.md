@@ -30,6 +30,12 @@ These never change: `src/`, `lean-toolchain`, `lake-manifest.json`, `lakefile.to
 [`scripts/check-frozen.sh`](scripts/check-frozen.sh) compares each of them with the Git object
 it had when this repository was frozen. CI runs that script on every push and pull request.
 
+All six are identical to their copies at commit
+[`ab0b7522`](https://github.com/leanprover-community/riemann-hypothesis/tree/ab0b7522a5ccc9b8530edf475af5088f8f6464aa)
+of leanprover-community/riemann-hypothesis. That is the last commit on its `main` branch before
+anyone edited the source. To confirm, run `git ls-tree HEAD` in this repository and
+`git ls-tree ab0b7522` in that one: each of the six has the same object id in both.
+
 The README, the notes, the scripts and the CI workflow can still change, for example when a
 download address moves.
 
@@ -132,12 +138,14 @@ what a passing run shows.
 
 ## Who made what
 
-- Levent Alpöge published the source.
-- Jack McCarthy made the mirror commit, `Challenge.lean`, the Comparator settings and the
-  notes. Those commits are kept here as they were, together with one by Marcelo Lynch.
-- Kim Morrison built the cache of compiled files and wrote the download client.
-- James Chang proposed a frozen repository beside the working one, in
-  [issue #56](https://github.com/leanprover-community/riemann-hypothesis/issues/56).
+- [Levent Alpöge](https://alpo.ge) published the source.
+- [Jack McCarthy](https://github.com/Deicyde) made the mirror commit, `Challenge.lean`, the
+  Comparator settings and the notes. Those commits are kept here as they were, together with
+  one by [Marcelo Lynch](https://github.com/marcelolynch).
+- [Kim Morrison](https://github.com/kim-em) built the cache of compiled files and wrote the
+  download client.
+- [James Chang](https://github.com/jamesyc) proposed a frozen repository beside the working
+  one, in [issue #56](https://github.com/leanprover-community/riemann-hypothesis/issues/56).
 
 ## License
 

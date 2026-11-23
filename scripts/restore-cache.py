@@ -107,6 +107,39 @@ def restore_jobs(root, cache, rows):
     return jobs
 
 
+def clear_output_hashes(root, rows):
+    """Remove Lake's saved hashes of the outputs that leantar is about to replace.
+
+    Lake reads ``X.hash`` instead of hashing ``X`` unless given ``--rehash``, and
+    leantar replaces ``X`` only. This is the list in Lake's ``Module.clearOutputHashes``.
+    Call it after ``restore_jobs`` has checked the paths.
+    """
+    modules_by_directory = {}
+    for name, *_ in rows:
+        *parents, stem = name.split(".")
+        modules_by_directory.setdefault(tuple(parents), set()).add(stem)
+
+    # Most hash files are absent in a fresh restore. Scan each directory once
+    # instead of attempting an unlink for every possible hash file.
+    for directory, suffixes in (("lib/lean", ("olean", "olean.server", "olean.private", "ilean", "ir.sig", "ir")),
+                                ("ir", ("c", "bc", "ltar"))):
+        base = root / ".lake/build" / directory
+        hash_suffixes = {suffix + ".hash" for suffix in suffixes}
+        for parents, stems in modules_by_directory.items():
+            try:
+                entries = os.scandir(base.joinpath(*parents))
+            except FileNotFoundError:
+                continue
+            with entries:
+                for entry in entries:
+                    stem, _, suffix = entry.name.partition(".")
+                    if suffix in hash_suffixes and stem in stems:
+                        try:
+                            os.unlink(entry.path)
+                        except FileNotFoundError:
+                            pass
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--project", type=Path, default=Path.cwd())
@@ -138,6 +171,7 @@ def main():
     env["ELAN_TOOLCHAIN"] = HEADER["toolchain"]
     env["RUST_MIN_STACK"] = str(max(int(env.get("RUST_MIN_STACK", "0")), 8388608))
     lean = Path(subprocess.check_output(["elan", "which", "lean"], cwd=root, env=env, text=True).strip())
+    clear_output_hashes(root, rows)
     print(f"Restoring {len(jobs)} modules with stock leantar ({args.jobs} workers)...", flush=True)
     subprocess.run([str(lean.with_name("leantar")), "--jobs", str(args.jobs), "-f", "-x", "-j", "-"],
                    input=json.dumps(jobs), text=True, cwd=root, env=env, check=True)

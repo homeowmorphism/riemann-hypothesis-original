@@ -108,7 +108,8 @@ with the same contents:
 
 CI runs both scripts and builds and exports `Challenge`. It does not build or judge the
 submission, which is too big for hosted runners. A bot proposes upstream verification results,
-script fixes and instruction corrections as pull requests; a cache-server move opens an issue.
+script fixes, instruction corrections and corrections to this README as pull requests; a
+cache-server move opens an issue.
 
 ## Credits
 
@@ -125,9 +126,11 @@ around it:
   `lake exe cache get` downloads, and wrote the download client.
 - [James Chang](https://github.com/jamesyc) proposed a frozen repository beside the working
   one, in [issue #56](https://github.com/leanprover-community/riemann-hypothesis/issues/56).
-- [Hang Lu Su](https://github.com/homeowmorphism) built this repository with Claude: the
-  freeze, its two checks, this README, the cache notes, the verification guide and the results
-  page. Hang Lu Su also wrote two small fixes to the download client.
+- [Hang Lu Su](https://github.com/homeowmorphism) set up this repository with Claude and
+  maintains it.
+
+Later changes are credited in the
+[commit history](https://github.com/homeowmorphism/riemann-hypothesis-original/commits/main).
 
 ## License
 

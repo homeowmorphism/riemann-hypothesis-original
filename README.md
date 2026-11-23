@@ -8,6 +8,11 @@ Dirichlet L-functions. The published source, its Lean 4.33.1 toolchain and its d
 are kept unchanged so that anyone can examine and check them. Cleanup and upgrades happen in
 [leanprover-community/riemann-hypothesis](https://github.com/leanprover-community/riemann-hypothesis).
 
+This repository sits under a personal account for now, with the idea that it could be transferred
+to the [leanprover-community](https://github.com/leanprover-community) organization later.
+Comments and pull requests are welcome, here or in the
+[Zulip thread](https://leanprover.zulipchat.com/#narrow/channel/113488-general/topic/RH.3A.20conserving.20original.20proof/with/642695513).
+
 ## Theorem Statements
 
 [`src/Main.lean`](src/Main.lean) claims the following theorems:

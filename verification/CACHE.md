@@ -87,9 +87,11 @@ judge it with Comparator, as the [README](../README.md#checking-the-proof-yourse
 
 `scripts/Cache.lean` and `scripts/cache-env.sh` are unchanged copies from upstream commit
 `f28a764e76a18f68680446bf09682c24d1a8b5c4`. `scripts/restore-cache.py` is an unchanged copy from
-upstream commit `d1016afb605a1ddd82d2ec978d522d095866753d`, which merged
-[leanprover-community/riemann-hypothesis#202](https://github.com/leanprover-community/riemann-hypothesis/pull/202).
-That change removes Lake's saved `.hash` files before unpacking, so that a checkout that has
-been built or checked before does not report up-to-date files as out of date. `scripts/lake-cache-get.sh` is
+upstream commit `96465db8f1917d03402ebfed3e8893253a1a191a`. Since `f28a764e` it has gained one
+step, from
+[leanprover-community/riemann-hypothesis#202](https://github.com/leanprover-community/riemann-hypothesis/pull/202)
+and [#241](https://github.com/leanprover-community/riemann-hypothesis/pull/241): it removes
+Lake's saved `.hash` files before unpacking. Without that step, a checkout that has been built
+or checked before can report correct files as out of date. `scripts/lake-cache-get.sh` is
 upstream's without the steps for later source revisions and later Lean versions, which this
 repository never has. The cache lines in `lakefile.toml` are upstream's as well.

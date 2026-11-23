@@ -114,13 +114,30 @@ def clear_output_hashes(root, rows):
     leantar replaces ``X`` only. This is the list in Lake's ``Module.clearOutputHashes``.
     Call it after ``restore_jobs`` has checked the paths.
     """
+    modules_by_directory = {}
     for name, *_ in rows:
-        module = Path(*name.split("."))
-        for directory, suffixes in (("lib/lean", (".olean", ".olean.server", ".olean.private", ".ilean", ".ir.sig", ".ir")),
-                                    ("ir", (".c", ".bc", ".ltar"))):
-            output = root / ".lake/build" / directory / module
-            for suffix in suffixes:
-                output.with_name(output.name + suffix + ".hash").unlink(missing_ok=True)
+        *parents, stem = name.split(".")
+        modules_by_directory.setdefault(tuple(parents), set()).add(stem)
+
+    # Most hash files are absent in a fresh restore. Scan each directory once
+    # instead of attempting an unlink for every possible hash file.
+    for directory, suffixes in (("lib/lean", ("olean", "olean.server", "olean.private", "ilean", "ir.sig", "ir")),
+                                ("ir", ("c", "bc", "ltar"))):
+        base = root / ".lake/build" / directory
+        hash_suffixes = {suffix + ".hash" for suffix in suffixes}
+        for parents, stems in modules_by_directory.items():
+            try:
+                entries = os.scandir(base.joinpath(*parents))
+            except FileNotFoundError:
+                continue
+            with entries:
+                for entry in entries:
+                    stem, _, suffix = entry.name.partition(".")
+                    if suffix in hash_suffixes and stem in stems:
+                        try:
+                            os.unlink(entry.path)
+                        except FileNotFoundError:
+                            pass
 
 
 def main():

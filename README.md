@@ -135,6 +135,6 @@ Later changes are credited in the
 ## License
 
 The submission belongs to its author and was published without a license. It is mirrored here
-unmodified, for verification only. Most of the files added around it come from
-leanprover-community/riemann-hypothesis, which has no license file either. The rest were written
+unmodified, for verification only. Most of the auxiliary files added around it come from
+leanprover-community/riemann-hypothesis. The rest were written
 for this repository.

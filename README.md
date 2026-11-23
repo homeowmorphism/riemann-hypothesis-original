@@ -83,7 +83,7 @@ scripts/check-frozen.sh    # compare with the pinned Git objects; requires full 
 scripts/check-archive.sh   # download the 239 MB source archive from alpo.ge and compare every file
 ```
 
-The Wayback Machine captured each of the archive's 14 parts between 2026-11-20 and 2026-11-22,
+The Wayback Machine captured each of the archive's 14 parts between 2026-11-20 and 2026-11-23,
 with the same contents:
 [part01][wb01], [part02][wb02], [part03][wb03], [part04][wb04], [part05][wb05],
 [part06][wb06], [part07][wb07], [part08][wb08], [part09][wb09], [part10][wb10],
@@ -97,7 +97,7 @@ with the same contents:
 [wb06]: https://web.archive.org/web/20261120154647/https://alpo.ge/lean.tar.gz.part06
 [wb07]: https://web.archive.org/web/20261120154740/https://alpo.ge/lean.tar.gz.part07
 [wb08]: https://web.archive.org/web/20261120154744/https://alpo.ge/lean.tar.gz.part08
-[wb09]: https://web.archive.org/web/20261122154217/https://alpo.ge/lean.tar.gz.part09
+[wb09]: https://web.archive.org/web/20261123144437/https://alpo.ge/lean.tar.gz.part09
 [wb10]: https://web.archive.org/web/20261121194229/https://alpo.ge/lean.tar.gz.part10
 [wb11]: https://web.archive.org/web/20261120155008/https://alpo.ge/lean.tar.gz.part11
 [wb12]: https://web.archive.org/web/20261120155011/https://alpo.ge/lean.tar.gz.part12

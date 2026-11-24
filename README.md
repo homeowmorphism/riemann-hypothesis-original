@@ -4,9 +4,9 @@
 
 This repository preserves Levent Alpöge's Lean submission claiming proofs of the Riemann
 hypothesis and the generalized Riemann hypothesis for Dirichlet L-functions,
-[announced on 2026-11-20](https://alpo.ge/remark.pdf). It adds a
-[Comparator](https://github.com/leanprover/comparator) setup and access to the community build
-cache.
+[announced on 2026-11-20](https://alpo.ge/remark.pdf). It adds access to the community build
+cache and a
+[Comparator](https://github.com/leanprover/comparator) setup.
 
 Community cleanup and upgrades happen in
 [leanprover-community/riemann-hypothesis](https://github.com/leanprover-community/riemann-hypothesis).

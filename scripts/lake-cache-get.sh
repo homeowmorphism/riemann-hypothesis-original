@@ -40,13 +40,16 @@ MATHLIB_CACHE_GET_URL="${MATHLIB_CACHE_GET_URL:-https://cache.mathlib.org/mathli
 # Cache URLs live in lakefile.toml; users need no separate configuration file.
 export LAKE_CACHE_DIR="$RH_CACHE_ROOT/.lake/cache"
 source scripts/cache-env.sh
-RH_CACHE_CURL_HOME="$(mktemp -d "$PWD/.lake/cache-curl.XXXXXX")"
-trap 'rm -rf -- "$RH_CACHE_CURL_HOME"' EXIT
-printf 'parallel-max = 500\n' > "$RH_CACHE_CURL_HOME/.curlrc"
+
+# Download the archives in the pinned list, 500 at a time, and check each one's SHA-256.
+# Archives already in the cache are checked too, so a rerun repairs an interrupted download.
+printf 'Fetching project cache (4.94 GB)...\n'
+python3 scripts/fetch-pinned-artifacts.py
 
 # The files were published under the upstream repository's name and this commit id.
 # That commit is an ancestor of every commit here and has the same src/ tree.
-printf 'Fetching project cache (4.94 GB; processing the index takes a few minutes)...\n'
-CURL_HOME="$RH_CACHE_CURL_HOME" lake -q cache get --repo leanprover-community/riemann-hypothesis \
+# Lake finds every archive already in the cache, so it only records which one each module uses.
+printf 'Registering the archives with Lake (takes a few minutes)...\n'
+lake -q cache get --repo leanprover-community/riemann-hypothesis \
   --rev e50d09817ad81469f737e8f637561e6ccf86c670
 python3 scripts/restore-cache.py

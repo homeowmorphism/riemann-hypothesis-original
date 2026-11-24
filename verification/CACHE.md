@@ -85,8 +85,9 @@ judge it with Comparator, as the [README](../README.md#checking-the-proof-yourse
 
 ## Where the client came from
 
-`scripts/Cache.lean` and `scripts/cache-env.sh` are unchanged copies from upstream commit
-`f28a764e76a18f68680446bf09682c24d1a8b5c4`. `scripts/restore-cache.py` is an unchanged copy from
+`scripts/Cache.lean` is an unchanged copy from upstream commit
+`f28a764e76a18f68680446bf09682c24d1a8b5c4`. `scripts/cache-env.sh` is the copy from that commit
+with one change, described below. `scripts/restore-cache.py` is an unchanged copy from
 upstream commit `96465db8f1917d03402ebfed3e8893253a1a191a`. Since `f28a764e` it has gained one
 step, from
 [leanprover-community/riemann-hypothesis#202](https://github.com/leanprover-community/riemann-hypothesis/pull/202)
@@ -96,9 +97,18 @@ or checked before can report correct files as out of date. `scripts/lake-cache-g
 upstream's without the steps for later source revisions and later Lean versions, which this
 repository never has. The cache lines in `lakefile.toml` are upstream's as well.
 
-Upstream commit `362d9476fbd4548dead48ed7b6a54600879e1e17`, which merged
-[#637](https://github.com/leanprover-community/riemann-hypothesis/pull/637), is the last one
-compared with these files. The step in `scripts/lake-cache-get.sh` that raises the open-file
-limit is the one from that commit. The same commit removed `scripts/restore-cache.py`,
-`scripts/cache-env.sh` and the Lean 4.33.1 path of `scripts/lake-cache-get.sh` from upstream's
-`main`, so later fixes to them will not come from there.
+Upstream commit `c9883164b0b3d762cee21f889d03d59a53b3ba3b` is the last one compared with these
+files. Two steps in `scripts/lake-cache-get.sh` come from upstream commits later than
+`f28a764e`:
+
+- The step that raises the open-file limit is from
+  [#637](https://github.com/leanprover-community/riemann-hypothesis/pull/637), at commit
+  `362d9476fbd4548dead48ed7b6a54600879e1e17`.
+- The `cd` that finds the project root ignores `CDPATH`. That is from
+  [#483](https://github.com/leanprover-community/riemann-hypothesis/pull/483), at commit
+  `b37b32c236352418f6edf1ed85dd2e4b14420686`. `scripts/cache-env.sh` has the same change, made
+  here.
+
+#637 removed `scripts/restore-cache.py`, `scripts/cache-env.sh` and the Lean 4.33.1 path of
+`scripts/lake-cache-get.sh` from upstream's `main`, so later fixes to them will not come from
+there.

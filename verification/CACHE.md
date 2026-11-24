@@ -95,3 +95,10 @@ Lake's saved `.hash` files before unpacking. Without that step, a checkout that 
 or checked before can report correct files as out of date. `scripts/lake-cache-get.sh` is
 upstream's without the steps for later source revisions and later Lean versions, which this
 repository never has. The cache lines in `lakefile.toml` are upstream's as well.
+
+Upstream commit `362d9476fbd4548dead48ed7b6a54600879e1e17`, which merged
+[#637](https://github.com/leanprover-community/riemann-hypothesis/pull/637), is the last one
+compared with these files. The step in `scripts/lake-cache-get.sh` that raises the open-file
+limit is the one from that commit. The same commit removed `scripts/restore-cache.py`,
+`scripts/cache-env.sh` and the Lean 4.33.1 path of `scripts/lake-cache-get.sh` from upstream's
+`main`, so later fixes to them will not come from there.

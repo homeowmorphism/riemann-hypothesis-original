@@ -18,12 +18,18 @@ if ! python3 -c 'import sys; sys.exit(sys.version_info < (3, 11))'; then
   exit 1
 fi
 
-# Mathlib's parallel unpacker can exceed the usual 1024-file soft limit.
+# Mathlib's parallel unpacker and our 500 parallel downloads exceed the usual 1024-file soft limit.
+# Best effort: macOS may refuse values above kern.maxfilesperproc even when the hard limit is unlimited.
 RH_CACHE_FD_HARD="$(ulimit -Hn)"
-if [[ "$RH_CACHE_FD_HARD" == unlimited || "$RH_CACHE_FD_HARD" -gt 65536 ]]; then
-  ulimit -Sn 65536
-else
-  ulimit -Sn "$RH_CACHE_FD_HARD"
+RH_CACHE_FD_WANT=65536
+if [[ "$RH_CACHE_FD_HARD" != unlimited && "$RH_CACHE_FD_HARD" -lt "$RH_CACHE_FD_WANT" ]]; then
+  RH_CACHE_FD_WANT="$RH_CACHE_FD_HARD"
+fi
+if ! ulimit -Sn "$RH_CACHE_FD_WANT" 2>/dev/null; then
+  RH_CACHE_FD_MAX="$(sysctl -n kern.maxfilesperproc 2>/dev/null || true)"
+  if ! { [[ -n "$RH_CACHE_FD_MAX" ]] && ulimit -Sn "$RH_CACHE_FD_MAX" 2>/dev/null; }; then
+    echo "warning: could not raise the open-file limit above $(ulimit -Sn); downloads may fail" >&2
+  fi
 fi
 
 # Qualify Mathlib's executable because this package also supplies a cache target.

@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Download the archive from alpo.ge and compare
+      - name: Download the archive from the Wayback Machine and compare
         run: bash scripts/check-archive.sh
 
   challenge:

@@ -4,10 +4,15 @@
 #   scripts/check-archive.sh               download the 14 parts and compare
 #   scripts/check-archive.sh lean.tar.gz   compare with a copy you already have
 #
-# Set RH_ARCHIVE_URL to download the parts from somewhere other than https://alpo.ge.
+# The parts come from the Wayback Machine's captures of alpo.ge, which stay as they are even if
+# the site changes. Set RH_ARCHIVE_URL=https://alpo.ge to download from the site itself.
 set -euo pipefail
 
 SHA256=9631b4f020199e580ba86178cb56c6e9b09f690c2369a80dc4334aa93f49c7fc
+# When the Wayback Machine captured each part, part01 first.
+CAPTURED=(20261120142003 20261120153908 20261120154123 20261120154256 20261120154552
+          20261120154647 20261120154740 20261120154744 20261123144437 20261121194229
+          20261120155008 20261120155011 20261120155155 20261120142002)
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
 T="$(mktemp -d)"
 trap 'rm -rf -- "$T"' EXIT
@@ -17,16 +22,21 @@ fail() { echo "DIFFERENT: $*" >&2; exit 1; }
 if [[ "$#" == 1 ]]; then
   archive="$1"
 else
-  base="${RH_ARCHIVE_URL:-https://alpo.ge}"
-  echo "Downloading 14 parts from $base ..."
+  echo "Downloading 14 parts from ${RH_ARCHIVE_URL:-the Wayback Machine} ..."
   for i in $(seq -w 1 14); do
-    curl -fsSL --retry 3 -o "$T/part$i" "$base/lean.tar.gz.part$i"
+    if [[ -n "${RH_ARCHIVE_URL:-}" ]]; then
+      url="$RH_ARCHIVE_URL/lean.tar.gz.part$i"
+    else
+      # id_ asks the Wayback Machine for the bytes exactly as it captured them.
+      url="https://web.archive.org/web/${CAPTURED[10#$i - 1]}id_/https://alpo.ge/lean.tar.gz.part$i"
+    fi
+    curl -fsSL --retry 3 -o "$T/part$i" "$url" || { echo "Could not download $url" >&2; exit 1; }
   done
   cat "$T"/part* > "$T/lean.tar.gz"
   archive="$T/lean.tar.gz"
 fi
 
-# The server answers 200 for any path, so the checksum is the only test of the download.
+# alpo.ge answers 200 for any path, so the checksum is the only test of the download.
 if command -v sha256sum >/dev/null; then
   sum="$(sha256sum "$archive" | cut -d' ' -f1)"
 else

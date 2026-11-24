@@ -89,14 +89,16 @@ To check the frozen files and compare the submission with the published archive:
 
 ```bash
 scripts/check-frozen.sh    # compare with the pinned Git objects; requires full Git history
-scripts/check-archive.sh   # download the 239 MB source archive from alpo.ge and compare every file
+scripts/check-archive.sh   # download the 239 MB source archive and compare every file
 ```
 
-You can download all 14 archive parts from the Wayback Machine instead of alpo.ge. These copies
-have the same contents and were captured between 2026-11-20 and 2026-11-23:
-
-[part01], [part02], [part03], [part04], [part05], [part06], [part07],
+The archive check downloads the 14 parts from the Wayback Machine's captures of alpo.ge, taken
+between 2026-11-20 and 2026-11-23. Its result does not depend on what alpo.ge serves later: [part01], [part02], [part03], [part04], [part05], [part06], [part07],
 [part08], [part09], [part10], [part11], [part12], [part13], [part14].
+
+If the Wayback Machine does not supply the archive, the check downloads it from alpo.ge instead.
+In that case the result does depend on alpo.ge. To download from alpo.ge only, run
+`RH_ARCHIVE_URL=https://alpo.ge scripts/check-archive.sh`.
 
 [part01]: https://web.archive.org/web/20261120142003/https://alpo.ge/lean.tar.gz.part01
 [part02]: https://web.archive.org/web/20261120153908/https://alpo.ge/lean.tar.gz.part02

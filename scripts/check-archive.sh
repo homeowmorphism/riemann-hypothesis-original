@@ -4,34 +4,58 @@
 #   scripts/check-archive.sh               download the 14 parts and compare
 #   scripts/check-archive.sh lean.tar.gz   compare with a copy you already have
 #
-# Set RH_ARCHIVE_URL to download the parts from somewhere other than https://alpo.ge.
+# The parts come from the Wayback Machine's captures of alpo.ge, which stay as they are even if
+# the site changes. If the captures do not supply the archive, the parts come from alpo.ge.
+# Set RH_ARCHIVE_URL to download from one place only, such as RH_ARCHIVE_URL=https://alpo.ge.
 set -euo pipefail
 
 SHA256=9631b4f020199e580ba86178cb56c6e9b09f690c2369a80dc4334aa93f49c7fc
+# When the Wayback Machine captured each part, part01 first.
+CAPTURED=(20261120142003 20261120153908 20261120154123 20261120154256 20261120154552
+          20261120154647 20261120154740 20261120154744 20261123144437 20261121194229
+          20261120155008 20261120155011 20261120155155 20261120142002)
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
 T="$(mktemp -d)"
 trap 'rm -rf -- "$T"' EXIT
 
 fail() { echo "DIFFERENT: $*" >&2; exit 1; }
 
+sha256() {
+  if command -v sha256sum >/dev/null; then sha256sum "$1"; else shasum -a 256 "$1"; fi | cut -d' ' -f1
+}
+
+# download SOURCE: fetch the 14 parts from SOURCE and join them into $T/lean.tar.gz.
+# SOURCE is a base URL, or "wayback" for the pinned captures.
+download() {
+  local i url
+  echo "Downloading 14 parts from ${1/#wayback/the Wayback Machine} ..."
+  for i in $(seq -w 1 14); do
+    if [[ "$1" == wayback ]]; then
+      # id_ asks the Wayback Machine for the bytes exactly as it captured them.
+      url="https://web.archive.org/web/${CAPTURED[10#$i - 1]}id_/https://alpo.ge/lean.tar.gz.part$i"
+    else
+      url="$1/lean.tar.gz.part$i"
+    fi
+    curl -fsSL --retry 3 --connect-timeout 30 -o "$T/part$i" "$url" ||
+      { echo "Could not download $url" >&2; return 1; }
+  done
+  cat "$T"/part* > "$T/lean.tar.gz"
+}
+
 if [[ "$#" == 1 ]]; then
   archive="$1"
 else
-  base="${RH_ARCHIVE_URL:-https://alpo.ge}"
-  echo "Downloading 14 parts from $base ..."
-  for i in $(seq -w 1 14); do
-    curl -fsSL --retry 3 -o "$T/part$i" "$base/lean.tar.gz.part$i"
-  done
-  cat "$T"/part* > "$T/lean.tar.gz"
   archive="$T/lean.tar.gz"
+  if [[ -n "${RH_ARCHIVE_URL:-}" ]]; then
+    download "$RH_ARCHIVE_URL" || exit 1
+  elif ! download wayback || [[ "$(sha256 "$archive")" != "$SHA256" ]]; then
+    echo "The Wayback Machine did not supply the pinned archive. Trying alpo.ge." >&2
+    download https://alpo.ge || exit 1
+  fi
 fi
 
-# The server answers 200 for any path, so the checksum is the only test of the download.
-if command -v sha256sum >/dev/null; then
-  sum="$(sha256sum "$archive" | cut -d' ' -f1)"
-else
-  sum="$(shasum -a 256 "$archive" | cut -d' ' -f1)"
-fi
+# alpo.ge answers 200 for any path, so the checksum is the only test of a download.
+sum="$(sha256 "$archive")"
 [[ "$sum" == "$SHA256" ]] || fail "the archive's sha256 is $sum, expected $SHA256"
 
 mkdir "$T/x"

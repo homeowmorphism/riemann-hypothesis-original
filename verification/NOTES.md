@@ -4,7 +4,15 @@
 > [leanprover-community/riemann-hypothesis](https://github.com/leanprover-community/riemann-hypothesis/blob/f28a764e76a18f68680446bf09682c24d1a8b5c4/verification/NOTES.md)
 > as they stood on 2026-11-21. "We" and "our" mean the people who run that repository. Two things
 > were changed here: this note was added, and the two links to their cache notes now point at
-> that commit. For results added since, read
+> that commit.
+>
+> Their notes have since come to describe edited source and newer Lean versions as well, so
+> this copy is now partial. One later passage about the original submission has been copied
+> word for word: the opening of [Checkers](#checkers) and its item on con-leche and con-ron, from
+> [commit `ba5e0217`](https://github.com/leanprover-community/riemann-hypothesis/blob/ba5e02170fcf8bc19acf4d63110f5eb85f8c0161/verification/NOTES.md#checkers)
+> of 2026-11-24. One sentence in it still names `comparator.json`, where their text now names
+> the configs in `comparator/`. Their notes were last compared with this copy at commit
+> `5f2c8594adf1f48032d37583118512cd7bbf3afa`. For results added since, read
 > [their current notes](https://github.com/leanprover-community/riemann-hypothesis/blob/main/verification/NOTES.md).
 
 Everything in this folder was written by the people checking the submission, not by its author.
@@ -182,20 +190,24 @@ swapped inside the export was rejected by every kernel.
 ## Checkers
 
 `lake comparator --paranoid` adds five checkers to Lean's kernel: Lean paranoid, nanoda,
-con-leche, con-ron and lean4lean. Three of them cannot check this project, for reasons that
-have nothing to do with whether the proof is right, and `lake comparator` counts any non-zero
-exit from a checker as a rejection. So `comparator.json` names only Lean paranoid and nanoda.
+con-leche, con-ron and lean4lean. Three of them, as bundled with Lean `v4.36.0`, cannot check
+this project, for reasons that have nothing to do with whether the proof is right, and
+`lake comparator` counts any non-zero exit from a checker as a rejection. So `comparator.json`
+names only Lean paranoid and nanoda.
 
-- **con-leche and con-ron** refuse a mutual inductive block that has a reflexive member. The
-  submission has one in the proof's dependencies:
+- **con-leche and con-ron**, as bundled with Lean `v4.36.0`, refuse a mutual inductive block
+  that has a reflexive member. The submission has one in the proof's dependencies:
   `FunctorialResolution.EmbeddedResolution.PrincipalizationCertificate`, declared mutually with
   `OrderCertificate`, has a constructor argument `hcert : ∀ z hz, PrincipalizationCertificate …`,
-  a function into the type being defined. An independent run (Andrew Sutherland, on the Lean Zulip) reports
-  that both exit 2 on the real export, in `--verified` and `--trusted` modes, with
+  a function into the type being defined. An independent run (Andrew Sutherland, on the Lean Zulip) reported
+  that both bundled binaries exit 2 on the real export, in `--verified` and `--trusted` modes, with
   `in-process model of …PrincipalizationCertificate: reflexive member`. We reproduced this on
   a small project with a mutual reflexive pair: both exit 2 with the same message, which makes
   `lake comparator` exit 1, while Lean's kernel, Lean paranoid and nanoda accept. They did
-  accept the Mathlib-sized smoke test above, and a non-mutual reflexive inductive.
+  accept the Mathlib-sized smoke test above, and a non-mutual reflexive inductive. Built from
+  `master` on GitHub, both accept the full export: Andrew Sutherland's page
+  (<https://math.mit.edu/~drew/grh/>) has con-leche `cd2eceab` accepting all 1,468,418
+  declarations in `--verified` mode, and con-ron `3f22699b` accepting them under `--compare`.
 - **lean4lean** from Lean 4.36 rejects every export made by Lean 4.33.1 with
   `unknown constant 'Decidable.intro'`, because 4.36 redefined `Decidable` in the core library.
 

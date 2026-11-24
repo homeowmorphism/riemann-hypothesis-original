@@ -88,8 +88,11 @@ judge it with Comparator, as [CHECKING.md](CHECKING.md) describes.
 `scripts/Cache.lean` is an unchanged copy from upstream commit
 `f28a764e76a18f68680446bf09682c24d1a8b5c4`. `scripts/cache-env.sh` is the copy from that commit
 with one change, described below. `scripts/restore-cache.py` is an unchanged copy from
-upstream commit `96465db8f1917d03402ebfed3e8893253a1a191a`. Since `f28a764e` it has gained one
-step, from
+upstream commit `0f07f5513b4e19d67730ecf48350135254f3eb73`, which has upstream's last version of
+it. Since `f28a764e` upstream changed it in two ways. One is from
+[leanprover-community/riemann-hypothesis#269](https://github.com/leanprover-community/riemann-hypothesis/pull/269):
+it creates each output directory once, not once per module. That only saves time. The other is a
+step from
 [leanprover-community/riemann-hypothesis#202](https://github.com/leanprover-community/riemann-hypothesis/pull/202)
 and [#241](https://github.com/leanprover-community/riemann-hypothesis/pull/241): it removes
 Lake's saved `.hash` files before unpacking. Without that step, a checkout that has been built
@@ -97,7 +100,7 @@ or checked before can report correct files as out of date. `scripts/lake-cache-g
 upstream's without the steps for later source revisions and later Lean versions, which this
 repository never has. The cache lines in `lakefile.toml` are upstream's as well.
 
-Upstream commit `c9883164b0b3d762cee21f889d03d59a53b3ba3b` is the last one compared with these
+Upstream commit `cb4dc6e23a6187db392c96664295415c55b6b01e` is the last one compared with these
 files. Two steps in `scripts/lake-cache-get.sh` come from upstream commits later than
 `f28a764e`:
 

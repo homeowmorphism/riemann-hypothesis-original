@@ -70,7 +70,7 @@ and what they found.
 ## What is frozen
 
 The source, the Lean 4.33.1 toolchain and the pinned dependency versions stay unchanged from the
-archive that Alpöge published on alpo.ge.
+archive that Alpöge published on [alpo.ge](https://alpo.ge/).
 
 The first commit of this repository, tagged `as-published`, is that archive's `lean/` directory
 with nothing changed. The [source notes](verification/NOTES.md#source) give the archive's

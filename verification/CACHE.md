@@ -81,7 +81,7 @@ These checks show that you received the recorded published files. They do not in
 establish that those files were faithfully compiled from the source or that the proof is correct.
 The connection to the original submission rests on the documented community builds and cache
 preparation described above. For independent verification, compile the source yourself and
-judge it with Comparator, as the [README](../README.md#checking-the-proof-yourself) describes.
+judge it with Comparator, as [CHECKING.md](CHECKING.md) describes.
 
 ## Where the client came from
 

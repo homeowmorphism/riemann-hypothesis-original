@@ -6,7 +6,7 @@ if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
 fi
 
 # zsh has no BASH_SOURCE; there, $0 is the path of the sourced file.
-RH_CACHE_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]:-$0}")/.." && pwd)"
+RH_CACHE_ROOT="$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]:-$0}")/.." && pwd)"
 export LAKE_CONFIG="$RH_CACHE_ROOT/lakefile.toml"
 export LAKE_CACHE_DIR="${LAKE_CACHE_DIR:-$RH_CACHE_ROOT/.lake/cache}"
 export LAKE_ARTIFACT_CACHE=true

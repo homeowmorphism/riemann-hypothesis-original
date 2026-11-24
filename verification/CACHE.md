@@ -97,8 +97,9 @@ step from
 and [#241](https://github.com/leanprover-community/riemann-hypothesis/pull/241): it removes
 Lake's saved `.hash` files before unpacking. Without that step, a checkout that has been built
 or checked before can report correct files as out of date. `scripts/lake-cache-get.sh` is
-upstream's without the steps for later source revisions and later Lean versions, which this
-repository never has. The cache lines in `lakefile.toml` are upstream's as well.
+based on upstream's at `f28a764e`, without the steps for later source revisions and later Lean
+versions, which this repository never has. The cache lines in `lakefile.toml` are upstream's as
+well.
 
 Upstream commit `cb4dc6e23a6187db392c96664295415c55b6b01e` is the last one compared with these
 files. Two steps in `scripts/lake-cache-get.sh` come from upstream commits later than
@@ -113,5 +114,5 @@ files. Two steps in `scripts/lake-cache-get.sh` come from upstream commits later
   here.
 
 #637 removed `scripts/restore-cache.py`, `scripts/cache-env.sh` and the Lean 4.33.1 path of
-`scripts/lake-cache-get.sh` from upstream's `main`, so later fixes to them will not come from
-there.
+`scripts/lake-cache-get.sh` from upstream's `main`. This repository keeps all three, so the
+script here no longer matches upstream's, and later fixes to them will not come from there.

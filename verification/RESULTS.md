@@ -1,4 +1,4 @@
-# Verification evidence 
+# Verification evidence
 
 Only checks of the [archive published on 2026-11-20](NOTES.md#source), preserved as
 `as-published` (`40e56bab`), belong here. Newer checkers are included when they check that

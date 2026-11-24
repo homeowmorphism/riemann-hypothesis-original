@@ -10,13 +10,16 @@ lake exe cache get
 lake build --no-build
 ```
 
-You need Lean's `elan`, `curl`, `git`, Python 3.11 or newer as `python3`, and about 105 GB of
-free disk.
+You need Lean's `elan`, `curl` 7.71 or newer, `git`, Python 3.11 or newer as `python3`, and
+about 105 GB of free disk.
 
 1. The first command fetches Mathlib's compiled files from Mathlib's own server. It then fetches
    this project's: 175,187 archives, 4.94 GB in total. Last, it unpacks them into `.lake/build`.
 2. The second command asks Lake whether anything still needs compiling. It should end with
    `All targets up-to-date`.
+
+If the download is interrupted, run `lake exe cache get` again. It checks the archives it
+already has and downloads the missing and damaged ones again.
 
 For Mathlib alone, run `lake exe mathlib/cache get`. The steps for checking the proof in the
 [README](../README.md#checking-the-proof-yourself) use that command, so that the proof is compiled on your
@@ -58,13 +61,19 @@ cache and its manifests remains to be established.
 | sha256 of Lake's map from inputs to outputs | `fed2443b161bd8194d9507e5c9c0e555b865dbba6963a0d57172723a439e6941` |
 | sha256 of `lake-manifest.json` | `fee57ee9ed399d0a638ca955e5ad40a37a36eeb9b6dfd9f5964114fa7bbe4774` |
 
-The downloader requests this fixed upstream commit, so later upstream builds do not change
-which cache it selects. That commit is an ancestor of every commit in this repository, and
-`src/` here has the same Git tree. The values live in
+The download takes the archives named in the pinned list. Lake then asks the server for this
+fixed upstream commit, so later upstream builds do not change which cache it selects. That
+commit is an ancestor of every commit in this repository, and `src/` here has the same Git
+tree. The values live in
 [`scripts/restore-cache.py`](../scripts/restore-cache.py) and
 [`scripts/lake-cache-get.sh`](../scripts/lake-cache-get.sh).
 
 ## What the download checks
+
+The download checks each archive's sha256 against the list of archives before the archive
+enters the cache. It checks the archives already in the cache the same way, and downloads a bad
+one again. It makes up to three passes. If an archive is still missing after that, it stops with
+`Download stopped`.
 
 Before unpacking, `restore-cache.py` checks that:
 
@@ -101,7 +110,7 @@ based on upstream's at `f28a764e`, without the steps for later source revisions 
 versions, which this repository never has. The cache lines in `lakefile.toml` are upstream's as
 well.
 
-Upstream commit `cb4dc6e23a6187db392c96664295415c55b6b01e` is the last one compared with these
+Upstream commit `e26756e547b281cbf137eb7e0f16cccb738f3f84` is the last one compared with these
 files. Two steps in `scripts/lake-cache-get.sh` come from upstream commits later than
 `f28a764e`:
 
@@ -116,3 +125,15 @@ files. Two steps in `scripts/lake-cache-get.sh` come from upstream commits later
 #637 removed `scripts/restore-cache.py`, `scripts/cache-env.sh` and the Lean 4.33.1 path of
 `scripts/lake-cache-get.sh` from upstream's `main`. This repository keeps all three, so the
 script here no longer matches upstream's, and later fixes to them will not come from there.
+
+#637 also replaced Lake's downloader upstream with `scripts/rh-buildq/fetch-artifacts.py`. The
+copy here is unchanged from upstream commit `d0c7942ba9ba724d4d0ffda19c30acae5515ce00`, which has
+upstream's last version of it. That version includes the error messages of
+[#1000](https://github.com/leanprover-community/riemann-hypothesis/pull/1000).
+
+Upstream runs the downloader from `scripts/ci-cache-get.py`. That script looks for a build made
+by upstream's CI, so it cannot select the pinned cache, and it is not copied.
+`scripts/fetch-pinned-artifacts.py` was written for this repository in its place. It checks the
+list of archives with the code in `restore-cache.py` and passes the list to the downloader.
+`scripts/lake-cache-get.sh` runs it before Lake's `cache get`. Lake then finds every archive
+already in the cache, so the script no longer sets 500 parallel transfers for Lake.

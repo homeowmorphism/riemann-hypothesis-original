@@ -93,12 +93,12 @@ scripts/check-archive.sh   # download the 239 MB source archive and compare ever
 ```
 
 The archive check downloads the 14 parts from the Wayback Machine's captures of alpo.ge, taken
-between 2026-11-20 and 2026-11-23. Its result does not depend on what alpo.ge serves later:
-
-[part01], [part02], [part03], [part04], [part05], [part06], [part07],
+between 2026-11-20 and 2026-11-23. Its result does not depend on what alpo.ge serves later: [part01], [part02], [part03], [part04], [part05], [part06], [part07],
 [part08], [part09], [part10], [part11], [part12], [part13], [part14].
 
-To download from alpo.ge itself, run `RH_ARCHIVE_URL=https://alpo.ge scripts/check-archive.sh`.
+If the Wayback Machine does not supply the archive, the check downloads it from alpo.ge instead.
+In that case the result does depend on alpo.ge. To download from alpo.ge only, run
+`RH_ARCHIVE_URL=https://alpo.ge scripts/check-archive.sh`.
 
 [part01]: https://web.archive.org/web/20261120142003/https://alpo.ge/lean.tar.gz.part01
 [part02]: https://web.archive.org/web/20261120153908/https://alpo.ge/lean.tar.gz.part02

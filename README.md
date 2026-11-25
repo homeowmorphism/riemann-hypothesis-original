@@ -9,6 +9,9 @@ cache and a
 
 Community cleanup and upgrades of this submission are on the
 [`alpoge` branch of leanprover-community/riemann-hypothesis](https://github.com/leanprover-community/riemann-hypothesis/tree/alpoge).
+Since 2026-11-25 that repository's `main` branch holds a shorter rewriting of the proof, copied
+from [lsernau/grh-lean](https://github.com/lsernau/grh-lean). This repository does not preserve
+or check the rewriting.
 
 ## Theorem Statements
 
@@ -150,6 +153,9 @@ Later changes are credited in the
 ## License
 
 The submission belongs to its author and was published without a license. It is mirrored here
-unmodified, for verification only. Most of the auxiliary files added around it come from
-leanprover-community/riemann-hypothesis. The rest were written
-for this repository.
+unmodified, for verification only. Most of the auxiliary files added around it come from the
+`alpoge` branch of leanprover-community/riemann-hypothesis. The rest were written for this
+repository.
+
+The rewriting on that repository's `main` branch is under Apache 2.0. Nothing in this repository
+is copied from the rewriting.

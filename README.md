@@ -7,8 +7,8 @@ hypothesis and the generalized Riemann hypothesis for Dirichlet L-functions, ann
 cache and a
 [Comparator](https://github.com/leanprover/comparator) setup.
 
-Community cleanup and upgrades happen in
-[leanprover-community/riemann-hypothesis](https://github.com/leanprover-community/riemann-hypothesis).
+Community cleanup and upgrades of this submission are on the
+[`alpoge` branch of leanprover-community/riemann-hypothesis](https://github.com/leanprover-community/riemann-hypothesis/tree/alpoge).
 
 ## Theorem Statements
 
@@ -81,7 +81,7 @@ A few additions for the Comparator check and the build cache are frozen as well:
 
 Every frozen file is identical to its copy in
 [leanprover-community/riemann-hypothesis at commit `ab0b7522`](https://github.com/leanprover-community/riemann-hypothesis/tree/ab0b7522a5ccc9b8530edf475af5088f8f6464aa).
-That is the last commit on that repository's `main` branch before anyone edited the published
+That is the last commit on that repository's `alpoge` branch before anyone edited the published
 source.
 
 To check the frozen files and compare the submission with the published archive:

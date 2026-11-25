@@ -1,22 +1,15 @@
 # Verification notes
 
-> These notes are a copy from
+> These notes come from
 > [leanprover-community/riemann-hypothesis](https://github.com/leanprover-community/riemann-hypothesis/blob/f28a764e76a18f68680446bf09682c24d1a8b5c4/verification/NOTES.md)
-> as they stood on 2026-11-21. "We" and "our" mean the people who run that repository. Two things
-> were changed here: this note was added, and the two links to their cache notes now point at
-> that commit.
->
-> Their notes have since come to describe edited source and newer Lean versions as well, so
-> this copy is now partial. One later passage about the original submission has been copied
-> word for word: the opening of [Checkers](#checkers) and its item on con-leche and con-ron, from
+> as they stood on 2026-11-21. "We" and "our" mean the people who run that repository, and the
+> measurements are theirs. The opening of [Checkers](#checkers) and its item on con-leche and
+> con-ron are from
 > [commit `ba5e0217`](https://github.com/leanprover-community/riemann-hypothesis/blob/ba5e02170fcf8bc19acf4d63110f5eb85f8c0161/verification/NOTES.md#checkers)
-> of 2026-11-24. One sentence in it still names `comparator.json`, where their text now names
-> the configs in `comparator/`. Their notes were last compared with this copy at commit
-> `5f2c8594adf1f48032d37583118512cd7bbf3afa`. For results added since, read
-> [their current notes](https://github.com/leanprover-community/riemann-hypothesis/blob/main/verification/NOTES.md).
+> of 2026-11-24. This copy has been shortened and is no longer compared with their notes.
 
 Everything in this folder was written by the people checking the submission, not by its author.
-Comparator's output will be added here when the run finishes.
+The results of the checks are in [RESULTS.md](RESULTS.md).
 
 ## Source
 
@@ -43,8 +36,8 @@ CI checks that the original file sits unchanged between the two. Neither additio
 treat an existing build as out of date; that was tested on a small Lean `v4.33.1` project, not
 on this one.
 
-The build cache is described in [CACHE.md](https://github.com/leanprover-community/riemann-hypothesis/blob/f28a764e76a18f68680446bf09682c24d1a8b5c4/verification/CACHE.md). The steps in the README's "Checking it" do
-not use it.
+The build cache is described in [CACHE.md](https://github.com/leanprover-community/riemann-hypothesis/blob/f28a764e76a18f68680446bf09682c24d1a8b5c4/verification/CACHE.md). The steps in
+[CHECKING.md](CHECKING.md) do not use it.
 
 The server answers HTTP 200 with an HTML page for any path, so a `part15` URL appears to exist.
 Check the joined sha256, not the status codes.
@@ -169,18 +162,10 @@ toolchains on our machine were compared file by file with the official release a
 
 ## Smoke test
 
-Before the real run, the route in the README was tested on a Mathlib-sized example: a solution
-on Lean `v4.33.1` and the same Mathlib pin, proving four small statements (`zeta_two`,
-`zeta_ne_zero`, `exp_pos'` and `sqrt_two_irrational`). Its export has 54,461 declarations and is 371 MB.
-
-| Checker (Lean `v4.36.0`) | Verdict | Time | Peak memory |
-|---|---|---|---|
-| Lean kernel | accepts | 70 s | 0.75 GB |
-| Lean paranoid (`leanchecker-paranoid`) | accepts | 81 s | 0.78 GB |
-| nanoda | accepts | 14 s | 0.41 GB |
-| con-leche | accepts | 15 s | 1.05 GB |
-| con-ron | accepts | 27 s | 1.47 GB |
-| lean4lean (only with `--paranoid`) | rejects: `unknown constant 'Decidable.intro'` | 11 s | 0.68 GB |
+Before the real run, the route in [CHECKING.md](CHECKING.md) was tested on a Mathlib-sized
+example: a solution on Lean `v4.33.1` and the same Mathlib pin, proving four small statements
+(`zeta_two`, `zeta_ne_zero`, `exp_pos'` and `sqrt_two_irrational`). Its export has 54,461
+declarations and is 371 MB.
 
 With Lean paranoid, nanoda, con-leche and con-ron named in the config, `lake comparator` exits 0
 with "Your solution is okay!". With `--paranoid` it exits 1, on lean4lean alone. On a small test project, a wrong
@@ -270,7 +255,8 @@ on one thread.
 
 ## Building
 
-- On our machine (48 cores, 503 GB of RAM) the build is on course for 7 to 10 hours.
+- On our machine (48 cores, 503 GB of RAM) the build was on course for 7 to 10 hours when these
+  notes were written.
 - Lake writes a `.setup.json` file per module that lists the module's whole import closure. In
   this project they average about 6 MB, which over 175,187 modules is around a terabyte. A
   module's file is not needed once the module is built, and deleting it leaves the build up to
@@ -291,9 +277,6 @@ on one thread.
   1 h 20 min on one thread and peaked at 163 GB of memory. A second independent build, in a
   different directory, reports the same size and checksum: see
   [Comparing builds](#comparing-builds).
-- Our estimate for the kernels, scaled from the smoke test and uncertain by a factor of 2 to 3:
-  roughly 4 hours each for Lean's kernel and the hardened build at about 150 GB of memory, and
-  under an hour for nanoda.
 
 ## Comparing builds
 
@@ -347,8 +330,8 @@ declarations, so the stored path is not exported. The reports agree with that:
 - *Solution.* ishaan2006's build, the one with 98,219 differing `.olean` files, gives an export
   with the size and sha256 quoted under [Building](#building)
   ([result](https://github.com/ishaan2006/rh-lean-reproduction/blob/ea1d0a9901f07063f83c13bddb1fd7e1893089a7/results/export_result.txt)).
-- *Challenge.* Ticobit ran step 1 of the README in two directories on one machine (macOS,
-  arm64). Both exports have the sha256 given in the README,
+- *Challenge.* Ticobit ran the challenge export, step 2 of [CHECKING.md](CHECKING.md), in two
+  directories on one machine (macOS, arm64). Both exports have the sha256 given there,
   `bd484ac9886a96f26b1d9a7a59ebd45b7a70d102c015d4f31f9302bbdd6ab2b9`
   ([result](https://github.com/Ticobit/rh-verification/blob/639250def42a6219c732abb6dbf632ff1373c546/issue6/EXPORT_TEST.md)).
 - Ticobit's parse of Sutherland's solution export finds neither `/` nor `\` in any of its
@@ -367,8 +350,3 @@ None of these builds was sandboxed, and the solution export has been reproduced 
   this is not the common path.
 - A passing run still trusts the checkers, Mathlib's definitions, Mathlib's official build
   cache, the exporter, and the sandboxes.
-
-## Results
-
-The build is in progress. The exports' checksums, Comparator's output, the exact command lines
-and the machine details will be added to this folder.

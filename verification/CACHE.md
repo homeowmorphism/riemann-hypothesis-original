@@ -21,9 +21,9 @@ about 105 GB of free disk.
 If the download is interrupted, run `lake exe cache get` again. It checks the archives it
 already has and downloads the missing and damaged ones again.
 
-For Mathlib alone, run `lake exe mathlib/cache get`. The steps for checking the proof in the
-[README](../README.md#checking-the-proof-yourself) use that command, so that the proof is compiled on your
-machine and not downloaded.
+For Mathlib alone, run `lake exe mathlib/cache get`. The steps for building from source in the
+[README](../README.md#building-from-source) use that command, so that the proof is compiled on
+your machine and not downloaded.
 
 ## Where the files come from
 
@@ -94,46 +94,10 @@ judge it with Comparator, as [CHECKING.md](CHECKING.md) describes.
 
 ## Where the client came from
 
-`scripts/Cache.lean` is an unchanged copy from upstream commit
-`f28a764e76a18f68680446bf09682c24d1a8b5c4`. `scripts/cache-env.sh` is the copy from that commit
-with one change, described below. `scripts/restore-cache.py` is an unchanged copy from
-upstream commit `0f07f5513b4e19d67730ecf48350135254f3eb73`, which has upstream's last version of
-it. Since `f28a764e` upstream changed it in two ways. One is from
-[leanprover-community/riemann-hypothesis#269](https://github.com/leanprover-community/riemann-hypothesis/pull/269):
-it creates each output directory once, not once per module. That only saves time. The other is a
-step from
-[leanprover-community/riemann-hypothesis#202](https://github.com/leanprover-community/riemann-hypothesis/pull/202)
-and [#241](https://github.com/leanprover-community/riemann-hypothesis/pull/241): it removes
-Lake's saved `.hash` files before unpacking. Without that step, a checkout that has been built
-or checked before can report correct files as out of date. `scripts/lake-cache-get.sh` is
-based on upstream's at `f28a764e`, without the steps for later source revisions and later Lean
-versions, which this repository never has. The cache lines in `lakefile.toml` are upstream's as
-well.
-
-Upstream commit `e26756e547b281cbf137eb7e0f16cccb738f3f84` is the last one compared with these
-files. Two steps in `scripts/lake-cache-get.sh` come from upstream commits later than
-`f28a764e`:
-
-- The step that raises the open-file limit is from
-  [#637](https://github.com/leanprover-community/riemann-hypothesis/pull/637), at commit
-  `362d9476fbd4548dead48ed7b6a54600879e1e17`.
-- The `cd` that finds the project root ignores `CDPATH`. That is from
-  [#483](https://github.com/leanprover-community/riemann-hypothesis/pull/483), at commit
-  `b37b32c236352418f6edf1ed85dd2e4b14420686`. `scripts/cache-env.sh` has the same change, made
-  here.
-
-#637 removed `scripts/restore-cache.py`, `scripts/cache-env.sh` and the Lean 4.33.1 path of
-`scripts/lake-cache-get.sh` from upstream's `main`. This repository keeps all three, so the
-script here no longer matches upstream's, and later fixes to them will not come from there.
-
-#637 also replaced Lake's downloader upstream with `scripts/rh-buildq/fetch-artifacts.py`. The
-copy here is unchanged from upstream commit `d0c7942ba9ba724d4d0ffda19c30acae5515ce00`, which has
-upstream's last version of it. That version includes the error messages of
-[#1000](https://github.com/leanprover-community/riemann-hypothesis/pull/1000).
-
-Upstream runs the downloader from `scripts/ci-cache-get.py`. That script looks for a build made
-by upstream's CI, so it cannot select the pinned cache, and it is not copied.
-`scripts/fetch-pinned-artifacts.py` was written for this repository in its place. It checks the
-list of archives with the code in `restore-cache.py` and passes the list to the downloader.
-`scripts/lake-cache-get.sh` runs it before Lake's `cache get`. Lake then finds every archive
-already in the cache, so the script no longer sets 500 parallel transfers for Lake.
+The cache client in `scripts/` was copied from upstream, except
+`scripts/fetch-pinned-artifacts.py`, which was written for this repository. Upstream has since
+removed its Lean 4.33.1 cache path
+([#637](https://github.com/leanprover-community/riemann-hypothesis/pull/637)), so the client is
+maintained here.
+[An earlier version of this page](https://github.com/homeowmorphism/riemann-hypothesis-original/blob/3091d9fb6eab9943787c5d19d0b7848bf364eac2/verification/CACHE.md#where-the-client-came-from)
+records the upstream commit each file came from and what was changed.

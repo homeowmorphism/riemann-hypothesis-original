@@ -40,8 +40,8 @@ lake build --no-build
 The second command should finish with `All targets up-to-date`, meaning there is nothing
 left to compile.
 
-<!-- verification/CACHE.md links to this section by its former anchor. -->
-<a id="checking-the-proof-yourself"></a>
+[CACHE.md](verification/CACHE.md) says where the compiled files come from, what the download
+checks, and what it does not show.
 
 ## Building from source
 

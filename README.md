@@ -3,7 +3,7 @@
 [![preservation and challenge checks](https://github.com/homeowmorphism/riemann-hypothesis-original/actions/workflows/checks.yml/badge.svg)](https://github.com/homeowmorphism/riemann-hypothesis-original/actions/workflows/checks.yml)
 
 This repository preserves Levent Alpöge's Lean submission claiming proofs of the Riemann
-hypothesis and the generalized Riemann hypothesis for Dirichlet L-functions, announced on 2026-11-20 at [alpo.ge/remark.pdf](https://alpo.ge/remark.pdf). It adds access to the community build
+hypothesis and the generalized Riemann hypothesis for Dirichlet L-functions, announced on 2026-11-20 at [alpo.ge/remark.pdf](https://web.archive.org/web/20261120141958/https://alpo.ge/remark.pdf). It adds access to the community build
 cache and a
 [Comparator](https://github.com/leanprover/comparator) setup.
 

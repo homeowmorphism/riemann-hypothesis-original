@@ -27,7 +27,7 @@ not live status.
 Andrew used the published archive, with Lean v4.33.1 for builds and Lean v4.36.0 for nanoda
 and the default/paranoid kernel checks. He built con-leche, con-ron, and lean4lean from source,
 at the checker commits shown above. The versions bundled with Lean v4.36.0 cannot check this
-archive, for the reasons in the [historical notes](NOTES.md#checkers).
+archive, for the reasons in the [checker notes](NOTES.md#checkers).
 
 Jack's report names his `original` branch. It gives no commit, checksum, tool versions,
 machine, or logs. The export cell comes instead from the
@@ -36,3 +36,16 @@ They give the size and sha256 of the solution export made from that build, and b
 Andrew's. They also identify the source as the published archive and name the build tools.
 
 See [CHECKING.md](CHECKING.md) to reproduce the archive checks.
+
+## Adding a result
+
+We are looking for full, independent builds of the frozen source. If you have made one, please
+open a pull request that adds it to this page. A report needs:
+
+- a build of the whole submission from source, not from this repository's cache of it
+  (Mathlib's own cache is fine);
+- the source it started from: the archive's sha256, or a commit of this repository;
+- the sha256 of the solution export made from that build;
+- a public record to link to: a log, a script, a results file, or the build outputs themselves.
+
+Please also say whether the build ran in a sandbox.

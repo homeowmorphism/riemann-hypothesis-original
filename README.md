@@ -121,6 +121,8 @@ CI checks source preservation and builds and exports `Challenge`.
 
 ## Hosting and contributing
 
+[James Chang](https://github.com/jamesyc) proposed a separate frozen repository in
+[leanprover-community/riemann-hypothesis#56](https://github.com/leanprover-community/riemann-hypothesis/issues/56).
 This repository sits under a personal account for now, with the idea that it could be transferred
 to the [leanprover-community](https://github.com/leanprover-community) organization later.
 Comments and pull requests are welcome, here or in the
@@ -129,26 +131,6 @@ Comments and pull requests are welcome, here or in the
 [homeowmorphism-bot](https://github.com/homeowmorphism-bot) is a bot that watches
 [leanprover-community/riemann-hypothesis](https://github.com/leanprover-community/riemann-hypothesis)
 and proposes verification results, download-script fixes and documentation corrections here. 
-
-## Credits
-
-The source is as [Levent Alpöge](https://alpo.ge) published it. Everything else was added
-around it:
-
-- [Jack McCarthy](https://github.com/Deicyde) mirrored the submission, set up the Comparator
-  check, and compiled and published
-  [a build of it](https://huggingface.co/datasets/JackMcCarthy/riemann-hypothesis-build).
-- [Kim Morrison](https://github.com/kim-em) turned that build into the cache and wrote its
-  download client.
-- [Marcelo Lynch](https://github.com/marcelolynch) made the Mathlib cache download use
-  `cache.mathlib.org`.
-- [James Chang](https://github.com/jamesyc) proposed a separate frozen repository
-  ([issue #56](https://github.com/leanprover-community/riemann-hypothesis/issues/56)).
-- [Hang Lu Su](https://github.com/homeowmorphism) set up this repository with Claude and
-  maintains it.
-
-Later changes are credited in the
-[commit history](https://github.com/homeowmorphism/riemann-hypothesis-original/commits/main).
 
 ## License
 

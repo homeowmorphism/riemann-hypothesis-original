@@ -94,7 +94,7 @@ judge it with Comparator, as [CHECKING.md](CHECKING.md) describes.
 
 ## Where the client came from
 
-The cache client in `scripts/` was copied from upstream, except
+Kim Morrison wrote the cache client upstream. The copy in `scripts/` came from there, except
 `scripts/fetch-pinned-artifacts.py`, which was written for this repository. Upstream has since
 removed its Lean 4.33.1 cache path
 ([#637](https://github.com/leanprover-community/riemann-hypothesis/pull/637)), so the client is

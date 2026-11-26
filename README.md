@@ -9,9 +9,10 @@ cache and a
 
 Community cleanup and upgrades of this submission are on the
 [`alpoge` branch of leanprover-community/riemann-hypothesis](https://github.com/leanprover-community/riemann-hypothesis/tree/alpoge).
-Since 2026-11-25 that repository's `main` branch holds a shorter rewriting of the proof, copied
-from [lsernau/grh-lean](https://github.com/lsernau/grh-lean). This repository does not preserve
-or check the rewriting.
+Since 2026-11-25 that repository's
+[`main` branch](https://github.com/leanprover-community/riemann-hypothesis/tree/main) hosts
+community improvements to a copy of [lsernau/grh-lean](https://github.com/lsernau/grh-lean), a
+shorter rewriting of the proof. This repository does not preserve or check the rewriting.
 
 ## Theorem Statements
 
